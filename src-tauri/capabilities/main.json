@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main",
+  "description": "Only the local CustomSuno workspace may receive events. Suno and authentication windows receive no native capabilities.",
+  "local": true,
+  "permissions": [
+    "core:event:allow-listen",
+    "core:event:allow-unlisten",
+    "core:window:allow-destroy"
+  ],
+  "webviews": [
+    "main"
+  ]
+}

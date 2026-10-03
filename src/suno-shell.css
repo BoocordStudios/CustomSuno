@@ -1,0 +1,131 @@
+/* Local layout adapter. Controls use local styles and shared semantic tokens. */
+:root {
+  --font-sans:'DM Sans','Segoe UI',sans-serif;
+  font-family:var(--font-sans);font-size:16px;
+  --background:var(--color-background-primary);--surface:var(--color-background-secondary);
+  --panel:var(--color-background-tertiary);--text:var(--color-foreground-primary);
+  --muted:var(--color-foreground-secondary);--line:var(--color-border-primary);
+  --accent:var(--color-accent-primary);--on-accent:var(--color-foreground-button-primary);
+  --spacing:.25rem;--tw-content:'';--default-transition-duration:150ms;
+  --default-transition-timing-function:cubic-bezier(.4,0,.2,1);
+}
+#root .hxc-btn-base {
+  background:transparent;border:0;padding-inline:var(--hxc-btn-px);padding-block:var(--hxc-btn-py);
+  border-radius:var(--hxc-btn-radius);font-family:var(--font-sans);font-size:var(--hxc-btn-font-size);
+  font-weight:var(--font-weight-medium);line-height:var(--hxc-btn-line-height);color:var(--hxc-btn-text);
+  opacity:var(--hxc-btn-opacity);gap:0;min-height:0;text-decoration:none;
+}
+#root .hxc-btn-base:disabled {opacity:1}
+#root .hxc-btn-base .hxc-btn-content{display:flex;gap:var(--hxc-btn-content-gap);z-index:1}
+#root .hxc-btn-base .hxc-btn-overlay-slot{display:block}
+#root .hxc-btn-base:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+#root .hxc-btn-base.btn{--hxc-btn-font-size:.8125rem;--hxc-btn-py:.375rem;min-height:34px}
+#root .hxc-btn-base.text-btn{--hxc-btn-px:.375rem;--hxc-btn-font-size:.75rem}
+#root .hxc-btn-base.icon-btn,#root .navigation-buttons .hxc-btn-base{--hxc-btn-px:.5rem;--hxc-btn-py:.375rem}
+#root .theme-choice{--hxc-btn-px:.75rem;--hxc-btn-py:.5rem;--hxc-btn-font-size:.8125rem}
+#root .theme-choice .hxc-btn-content{width:100%;justify-content:flex-start}
+#root .theme-choice .hxc-btn-content>svg{margin-left:auto}
+#root .theme-choice.selected{--hxc-btn-bg:var(--color-background-tertiary);--hxc-btn-border:var(--color-border-focus)}
+#root .mod-buttons .hxc-btn-base{height:34px;--hxc-btn-font-size:.8125rem}
+#root .mod-buttons .hxc-btn-base.active{--hxc-btn-bg:var(--color-background-tertiary);--hxc-btn-text:var(--color-foreground-primary)}
+#root .mod-buttons .hxc-btn-content>span.download-dot{display:block}
+#root .play{width:34px;height:34px}
+#root .btn.wide .hxc-btn-content{width:100%}
+.browser-toolbar{background:var(--color-background-primary)}
+.tools-drawer,.drawer-title{background-color:var(--color-background-primary)}
+.address{border-radius:9999px;background:var(--color-background-secondary)}
+.plugin-card,.audio-player{border-radius:16px;background:var(--color-background-secondary)}
+.code-editor,input:not([type=range]):not([type=color]):not([type=file]):not([type=checkbox]),select{
+  font-family:var(--font-sans);font-size:13px;line-height:20px;border-radius:8px;
+  background:var(--color-background-secondary);border-color:var(--color-border-primary);color:var(--color-foreground-primary);
+}
+.code-editor{font-family:var(--font-mono)}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:2px}
+.switch{width:36px;height:20px;padding:2px;background:var(--color-background-tertiary)}
+.switch span{width:16px;height:16px;background:var(--color-foreground-primary)}
+.switch.checked{background:var(--color-background-button-primary)}
+.switch.checked span{background:var(--color-foreground-button-primary);transform:translateX(16px)}
+input[type=range]{background:var(--color-background-tertiary);accent-color:var(--color-foreground-primary)}
+input[type=range]::-webkit-slider-thumb{background:var(--color-foreground-primary)}
+.theme-editor input[type=checkbox]{accent-color:var(--color-background-button-primary)}
+.toolbar-notice{background:var(--color-background-secondary);border-color:var(--color-border-primary);color:var(--color-foreground-primary)}
+.toolbar-notice.error{background:#522e29;color:#ffe4d9}
+.section label,.option-row strong,.download-row strong{font-size:13px}
+p{font-size:13px}small{font-size:11px}
+@media(max-width:1200px){#root .mod-buttons .hxc-btn-content>span:not(.download-dot){display:none}}
+
+/* Compact tool panels. Toolbar and tab heights match the native webview inset. */
+.drawer-title{height:56px;padding:12px 20px}
+.drawer-title h1{font-size:17px;font-weight:600;letter-spacing:-.3px;margin:0}
+.drawer-content{padding:16px 20px 24px;scrollbar-gutter:stable}
+.drawer-content>.button-row:first-child,.media-library fieldset>.button-row:first-child{margin-top:0}
+.option-row{padding:13px 0;gap:16px}
+.option-row:first-child{padding-top:0}
+.option-row p{margin-top:3px}
+.section{margin-top:18px;padding-top:16px}
+.section h2{margin-bottom:10px}
+.section>p{margin-bottom:12px}
+.button-row{gap:8px;margin:12px 0}
+.zoom-control{gap:12px;margin:12px 0 0}
+.plugin-card{padding:14px;margin:12px 0}
+.card-heading{margin-bottom:8px}
+.card-heading h2{margin-bottom:3px}
+.card-actions{padding-top:8px;margin-top:10px}
+.plugin-details{font-size:12px;color:var(--muted)}
+.plugin-details summary{padding:4px 0}
+.plugin-details p{margin:8px 0}
+.tags{margin:8px 0 0}
+.tags>span{font-size:10px}
+.empty{padding:28px 8px}
+.theme-list{gap:6px;margin:14px 0}
+.theme-choice .hxc-btn-content>span{min-width:0;overflow-wrap:anywhere}
+.theme-choice .swatches{flex-shrink:0}
+.theme-editor summary,.advanced-css summary,.media-metadata summary{font-size:13px;font-weight:500;color:var(--text);cursor:pointer}
+summary:focus-visible{outline:2px solid var(--color-border-focus);outline-offset:4px;border-radius:3px}
+.theme-editor[open]>summary,.advanced-css[open]>summary{margin-bottom:16px}
+.advanced-css:not([open]) summary{margin-bottom:0}
+.theme-editor .theme-color-row{padding:7px 0}
+.theme-color-row input[type=color]{width:38px;height:30px;border-radius:6px}
+.theme-editor h3{margin:18px 0 12px}
+.theme-background-preview{min-height:96px;margin:14px 0}
+.range-label{margin:15px 0}
+.drawer-content .export-format{flex-direction:row;align-items:center;gap:14px}
+.export-format select{flex:1;min-width:0}
+.range-label output,.zoom-control output{font-variant-numeric:tabular-nums}
+.about-brand{gap:12px}
+.about-brand img{width:42px;height:44px}
+.about-brand h2{font-size:16px;margin-bottom:0}
+.about-brand small{margin-top:4px}
+.settings-links{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.media-row .button-row{gap:12px}
+.media-library .media-search{margin:12px 0}
+.media-editor audio{margin:12px 0}
+.media-metadata{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin:18px 0}
+.media-metadata[open]>summary{margin-bottom:12px}
+.media-metadata label:last-child{margin-bottom:0}
+.lyrics-editor,.media-row.selected,.media-status{border-radius:8px}
+.browser-preview{gap:12px}
+.browser-preview>img{width:72px;height:74px}
+.browser-preview h1{font-size:22px}
+.browser-preview code{font-size:11px}
+.browser-preview:has(~.tools-drawer){right:420px}
+#root .hxc-btn-base.new-tab{width:30px;height:30px;--hxc-btn-px:.375rem;--hxc-btn-py:.375rem}
+.browser-tab.selected{border-color:var(--line);box-shadow:inset 0 -2px var(--accent)}
+input[type=range]:disabled{opacity:.4;cursor:not-allowed}
+
+/* The drawer stays mounted while closing so the native webview cannot cover it. */
+.tools-drawer{transform:translateX(100%);opacity:0;overflow:hidden}
+.drawer-content{animation:panel-enter 180ms cubic-bezier(.22,1,.36,1) both}
+.switch{transition:background-color 180ms ease}
+.switch span{transition:transform 220ms cubic-bezier(.22,1,.36,1),background-color 180ms ease}
+.theme-choice,.plugin-card{transition:background-color 180ms ease,border-color 180ms ease}
+@keyframes panel-enter{
+  from{opacity:0;transform:translateY(7px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.browser-shell[data-reduced-motion=true] *,
+.browser-shell[data-reduced-motion=true] *::before,
+.browser-shell[data-reduced-motion=true] *::after{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){
+  .browser-shell *,.browser-shell *::before,.browser-shell *::after{animation:none!important;transition:none!important}
+}

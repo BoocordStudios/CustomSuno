@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "song-links",
+  "name": "Copy song links",
+  "version": "1.0.0",
+  "description": "Adds a copy button next to song links, including dynamically loaded songs.",
+  "author": "CustomSuno",
+  "enabled": true,
+  "script": "api.addStyle('.customsuno-copy-song { display:inline-flex; align-items:center; margin:2px 6px; padding:3px 7px; border:1px solid #31858b; border-radius:5px; background:#153b3f; color:#a4f1f2; font:10px system-ui; cursor:pointer; vertical-align:middle; }');\napi.observe('a[href*=\"/song/\"]', link => {\n  const button = document.createElement('button');\n  button.type = 'button';\n  button.className = 'customsuno-copy-song';\n  button.textContent = 'Copy link';\n  button.title = 'CustomSuno: Song-Copy link';\n  link.insertAdjacentElement('afterend', button);\n  api.on(button, 'click', async event => {\n    event.preventDefault(); event.stopPropagation();\n    try { await navigator.clipboard.writeText(link.href); api.toast('Song link copied.'); }\n    catch { api.toast('Clipboard unavailable.'); }\n  });\n  return () => button.remove();\n});"
+}

@@ -1,0 +1,52 @@
+/* Project-owned controls using shared semantic theme colors. */
+:root {
+  --font-sans: 'DM Sans', 'Segoe UI', sans-serif;
+  --font-mono: Consolas, monospace;
+  --font-weight-medium: 500;
+  --color-background-primary: #111111;
+  --color-background-secondary: #1b1b1b;
+  --color-background-tertiary: #262626;
+  --color-foreground-primary: #faf7f2;
+  --color-foreground-secondary: #a6a09a;
+  --color-border-primary: #363230;
+  --color-border-focus: #ff8b1a;
+  --color-accent-primary: #ff8b1a;
+  --color-background-button-primary: #ff8b1a;
+  --color-foreground-button-primary: #101210;
+}
+.hxc-btn-base {
+  --hxc-btn-px: .75rem;
+  --hxc-btn-py: .125rem;
+  --hxc-btn-radius: 9999px;
+  --hxc-btn-font-size: .875rem;
+  --hxc-btn-line-height: 1.5rem;
+  --hxc-btn-content-gap: .25rem;
+  --hxc-btn-bg: var(--color-background-secondary);
+  --hxc-btn-text: var(--color-foreground-primary);
+  --hxc-btn-border: var(--color-border-primary);
+  --hxc-btn-opacity: 1;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.hxc-btn-variant-primary {
+  --hxc-btn-bg: var(--color-background-button-primary);
+  --hxc-btn-text: var(--color-foreground-button-primary);
+  --hxc-btn-border: transparent;
+}
+.hxc-btn-variant-tertiary-legacy {
+  --hxc-btn-bg: transparent;
+  --hxc-btn-text: var(--color-foreground-secondary);
+  --hxc-btn-border: transparent;
+}
+.hxc-btn-overlay-slot { position: absolute; inset: 0; pointer-events: none; border-radius: inherit; }
+.hxc-btn-background-slot { background: var(--hxc-btn-bg); transition: background-color 150ms ease, filter 150ms ease; }
+.hxc-btn-border { border: 1px solid var(--hxc-btn-border); }
+.hxc-btn-content { align-items: center; justify-content: center; }
+.hxc-btn-base:hover:not(:disabled) .hxc-btn-background-slot { filter: brightness(1.15); }
+.hxc-btn-variant-tertiary-legacy:hover:not(:disabled) { --hxc-btn-bg: var(--color-background-tertiary); }
+#root .hxc-btn-base:disabled .hxc-btn-overlay-slot,
+#root .hxc-btn-base:disabled .hxc-btn-content { opacity: .4; }

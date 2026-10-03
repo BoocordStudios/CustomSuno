@@ -1,0 +1,157 @@
+name: Build and release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Test and build ${{ matrix.platform }} x64
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: Windows
+            runner: windows-latest
+            bundles: nsis
+          - platform: Linux
+            runner: ubuntu-22.04
+            bundles: deb,appimage
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    env:
+      CARGO_TERM_COLOR: always
+      APPIMAGE_EXTRACT_AND_RUN: '1'
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Set up Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf libfuse2 xvfb gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-libav
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+          shared-key: ${{ matrix.platform }}
+      - name: Install frontend dependencies
+        run: npm ci
+      - name: Check release version
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          VERSION=$(node -p "JSON.parse(require('fs').readFileSync('package.json')).version")
+          test "$GITHUB_REF_NAME" = "v$VERSION"
+      - name: Test frontend
+        run: npm test
+      - name: Test native code
+        run: cargo test --locked --manifest-path src-tauri/Cargo.toml --lib
+      - name: Check native code
+        run: cargo clippy --locked --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings
+      - name: Build packages
+        run: npm run tauri -- build --bundles ${{ matrix.bundles }}
+      - name: Check Linux startup
+        if: runner.os == 'Linux'
+        shell: bash
+        env:
+          WEBKIT_DISABLE_COMPOSITING_MODE: '1'
+        run: |
+          set +e
+          timeout 20s xvfb-run -a src-tauri/target/release/customsuno > startup.log 2>&1
+          RESULT=$?
+          set -e
+          cat startup.log
+          test "$RESULT" -eq 124
+          if rg -i 'panicked at|failed to create webview|fatal error' startup.log; then exit 1; fi
+      - name: Upload Windows installer
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v7
+        with:
+          name: windows-x64
+          path: src-tauri/target/release/bundle/nsis/*-setup.exe
+          if-no-files-found: error
+          compression-level: 0
+      - name: Upload Linux packages
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v7
+        with:
+          name: linux-x64
+          path: |
+            src-tauri/target/release/bundle/deb/*.deb
+            src-tauri/target/release/bundle/appimage/*.AppImage
+          if-no-files-found: error
+          compression-level: 0
+      - name: Package license notices
+        if: runner.os == 'Linux'
+        run: tar -czf CustomSuno-third-party-notices.tar.gz LICENSE THIRD_PARTY_NOTICES.md public/licenses
+      - name: Upload license notices
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v7
+        with:
+          name: license-notices
+          path: CustomSuno-third-party-notices.tar.gz
+          if-no-files-found: error
+          compression-level: 0
+
+  codec-source:
+    name: Package FFmpeg core sources
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v7
+      - name: Package upstream sources
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/package-ffmpeg-source.py
+      - name: Upload source package
+        uses: actions/upload-artifact@v7
+        with:
+          name: ffmpeg-source
+          path: release/ffmpeg-core-0.12.10-source.tar.gz
+          if-no-files-found: error
+          compression-level: 0
+
+  publish:
+    name: Publish release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build, codec-source]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v7
+      - name: Download release assets
+        uses: actions/download-artifact@v8
+        with:
+          path: release-assets
+          merge-multiple: true
+      - name: Generate checksums
+        run: |
+          cd release-assets
+          find . -type f -print0 | sort -z | xargs -0 sha256sum > ../SHA256SUMS.txt
+          mv ../SHA256SUMS.txt .
+      - name: Publish packages and notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --verify-tag --title "CustomSuno $GITHUB_REF_NAME" --notes-file docs/RELEASE_NOTES.md $(find release-assets -type f)

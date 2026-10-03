@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "id": "song-links",
+  "name": "Song-Links kopieren",
+  "version": "1.0.0",
+  "description": "Ergänzt auf der originalen Suno-Seite einen kleinen Kopier-Button neben Song-Links. Funktioniert auch für nachgeladene Songs.",
+  "author": "CustomSuno",
+  "enabled": true,
+  "script": "api.addStyle('.customsuno-copy-song { display:inline-flex; align-items:center; margin:2px 6px; padding:3px 7px; border:1px solid #31858b; border-radius:5px; background:#153b3f; color:#a4f1f2; font:10px system-ui; cursor:pointer; vertical-align:middle; }');\napi.observe('a[href*=\"/song/\"]', link => {\n  const button = document.createElement('button');\n  button.type = 'button';\n  button.className = 'customsuno-copy-song';\n  button.textContent = 'Link kopieren';\n  button.title = 'CustomSuno: Song-Link kopieren';\n  link.insertAdjacentElement('afterend', button);\n  api.on(button, 'click', async event => {\n    event.preventDefault(); event.stopPropagation();\n    try { await navigator.clipboard.writeText(link.href); api.toast('Song-Link kopiert.'); }\n    catch { api.toast('Zwischenablage nicht verfügbar.'); }\n  });\n  return () => button.remove();\n});"
+}

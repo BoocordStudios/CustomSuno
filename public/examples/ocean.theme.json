@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "ocean",
+  "name": "Ocean",
+  "description": "Deep blue with turquoise accents.",
+  "colors": {
+    "background": "#0d161e",
+    "surface": "#13232f",
+    "panel": "#1a3040",
+    "accent": "#60e5cf",
+    "text": "#eaf9ff",
+    "muted": "#8da9bc",
+    "line": "#294353"
+  },
+  "sunoCss": "input, textarea { caret-color: var(--customsuno-accent); }"
+}

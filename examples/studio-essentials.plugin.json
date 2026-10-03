@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "id": "studio-essentials",
+  "name": "Studio Essentials",
+  "version": "1.0.0",
+  "description": "Two audio presets and a copper theme.",
+  "author": "CustomSuno",
+  "enabled": true,
+  "presets": [
+    {
+      "id": "night-listening",
+      "name": "Night Listening",
+      "description": "Gentle bass and compression.",
+      "gains": [
+        1,
+        1.5,
+        1,
+        0,
+        0,
+        0.5,
+        1,
+        0.5,
+        -0.5,
+        -1
+      ],
+      "preamp": -3,
+      "enhance": true,
+      "warmth": 30,
+      "clarity": 10,
+      "compression": 45,
+      "normalize": true
+    },
+    {
+      "id": "acoustic-detail",
+      "name": "Acoustic Detail",
+      "description": "Presence for acoustic instruments.",
+      "gains": [
+        -2,
+        -1,
+        0,
+        -1,
+        0,
+        0.5,
+        1.5,
+        2,
+        1.5,
+        1
+      ],
+      "preamp": -3,
+      "enhance": true,
+      "warmth": 15,
+      "clarity": 30,
+      "compression": 10,
+      "normalize": true
+    }
+  ],
+  "themes": [
+    {
+      "id": "copper",
+      "name": "Copper",
+      "description": "Dark brown with copper accents.",
+      "colors": {
+        "background": "#17110f",
+        "surface": "#231a17",
+        "panel": "#30221d",
+        "accent": "#f2ab80",
+        "text": "#fff1e7",
+        "muted": "#b09a8a",
+        "line": "#483229"
+      },
+      "sunoCss": "input, textarea { caret-color: var(--customsuno-accent); }"
+    }
+  ],
+  "sunoCss": "/* Local style adjustments. */\nbutton, input, textarea { border-radius: 10px; }\n::selection { background: var(--customsuno-accent); color: var(--customsuno-background); }"
+}

@@ -1,0 +1,15 @@
+node_modules/
+dist/
+src-tauri/target/
+src-tauri/gen/
+output/
+.playwright-cli/
+*.log
+public/audio-codecs/
+release/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+public/licenses/dependencies/
