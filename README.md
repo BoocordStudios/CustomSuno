@@ -1,5 +1,7 @@
 # CustomSuno
 
+**CustomSuno is an independent, unofficial project. It is not owned by Suno and is not affiliated with, endorsed by, or developed in partnership or collaboration with Suno.**
+
 A desktop workspace for [Suno](https://suno.com), with tabs, optional website plugins, themes, and local audio tools. Built with Tauri 2 and React. Available for Windows and Linux, in English and German.
 
 ## Download
@@ -56,7 +58,7 @@ Audio tools process local files. Imports are limited to 150 MiB, 20 minutes, and
 
 Plugins execute in the Suno page and can access its content. Install plugins from sources you trust. Remote pages have no native Tauri permissions. Website changes may require plugin updates, and some sign-in providers may restrict embedded browsers.
 
-CustomSuno is an independent project and is not affiliated with Suno. Access to Suno and its services remains subject to Suno's terms and account requirements.
+Access to Suno and its services remains subject to Suno's terms and account requirements.
 
 ## License
 

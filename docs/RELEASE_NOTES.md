@@ -1,3 +1,5 @@
+**CustomSuno is an independent, unofficial project. It is not owned by Suno and is not affiliated with, endorsed by, or developed in partnership or collaboration with Suno.**
+
 First public release of CustomSuno for Windows and Linux.
 
 - Compact toolbar and tool panels with English and German support.
@@ -13,4 +15,4 @@ First public release of CustomSuno for Windows and Linux.
 
 CustomSuno's original code is MIT licensed. Bundled dependencies retain their own licenses; the FFmpeg WASM core is GPL-2.0-or-later. License notices and the FFmpeg core source archive are included as release assets.
 
-CustomSuno is independent of Suno. See the README for requirements, data storage, and limitations.
+See the README for requirements, data storage, and limitations.
